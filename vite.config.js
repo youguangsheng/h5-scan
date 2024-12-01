@@ -10,6 +10,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src") // 路径别名
     }
   },
+  base: "./",
+  build: { outDir: "docs" },
   server: {
     proxy: {
       "/api": {
