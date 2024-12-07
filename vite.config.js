@@ -22,8 +22,8 @@ export default defineConfig({
     }
   },
   base: "./",
-  build: { outDir: "docs" },
-  server: {
+  build: { outDir: "docs" }
+  /* server: {
     proxy: {
       "/api": {
         target: "http://1.94.32.227:8080/", // 代理目标服务器地址
@@ -31,5 +31,5 @@ export default defineConfig({
         rewrite: path => path.replace(/^\/api/, "/api") // 路径重写
       }
     }
-  }
+  } */
 });

@@ -75,7 +75,7 @@ const getOdcode = () => {
       return;
     }
     loading.value = true;
-    fetch("/api/v1/scan_info", {
+    fetch("http://1.94.32.227:8080/api/v1/scan_info", {
       method: "POST", // 设置请求方法为POST
       headers: {
         "Content-Type": "application/json" // 设置请求头为JSON格式
@@ -105,7 +105,7 @@ const getScanResult = qr => {
   const { odcode } = route.query || {};
 
   loading.value = false;
-  fetch("/api/v1/scan_result", {
+  fetch("http://1.94.32.227:8080/api/v1/scan_result", {
     method: "POST", // 设置请求方法为POST
     headers: {
       "Content-Type": "application/json" // 设置请求头为JSON格式
