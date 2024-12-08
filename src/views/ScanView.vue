@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div @click="close" class="title">扫码 X</div>
+    <!-- <div @click="close" class="title">扫码 X</div> -->
     <!-- 扫描仪占位符 -->
     <div id="reader"></div>
   </div>
@@ -77,6 +77,7 @@ const useCamera = () => {
 
 onMounted(() => {
   useCamera();
+  document.title = "扫码";
 });
 </script>
 
