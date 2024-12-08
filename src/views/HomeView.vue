@@ -44,7 +44,7 @@ onMounted(() => {
 });
 
 // 选取二维码图片并识别
-const useLocal = e => {
+const useLocal = (e) => {
   if (e.target.files.length == 0) {
     return;
   }
@@ -52,10 +52,10 @@ const useLocal = e => {
   const html5QrCode = new Html5Qrcode("reader1");
   html5QrCode
     .scanFile(imageFile, false)
-    .then(qr => {
+    .then((qr) => {
       alert(qr);
     })
-    .catch(err => {
+    .catch((err) => {
       alert(err);
     });
 };
@@ -75,24 +75,24 @@ const getOdcode = () => {
       return;
     }
     loading.value = true;
-    fetch("http://1.94.32.227:8080/api/v1/scan_info", {
+    fetch("/api/v1/scan_info", {
       method: "POST", // 设置请求方法为POST
       headers: {
-        "Content-Type": "application/json" // 设置请求头为JSON格式
+        "Content-Type": "application/json", // 设置请求头为JSON格式
       },
-      body: JSON.stringify({ odcode })
+      body: JSON.stringify({ odcode }),
     })
-      .then(response => {
+      .then((response) => {
         return response.json(); // 将响应解析为 JSON 格式
       })
-      .then(res => {
+      .then((res) => {
         if (res.errcode === 0) {
           const { valid_until, count } = res.data;
           validUntil.value = formatTimestamp(valid_until);
           remaind.value = count;
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       })
       .finally(() => {
@@ -101,21 +101,21 @@ const getOdcode = () => {
   }
 };
 
-const getScanResult = qr => {
+const getScanResult = (qr) => {
   const { odcode } = route.query || {};
 
   loading.value = false;
-  fetch("http://1.94.32.227:8080/api/v1/scan_result", {
+  fetch("/api/v1/scan_result", {
     method: "POST", // 设置请求方法为POST
     headers: {
-      "Content-Type": "application/json" // 设置请求头为JSON格式
+      "Content-Type": "application/json", // 设置请求头为JSON格式
     },
-    body: JSON.stringify({ odcode, qrcode_content: qr })
+    body: JSON.stringify({ odcode, qrcode_content: qr }),
   })
-    .then(response => {
+    .then((response) => {
       return response.json(); // 将响应解析为 JSON 格式
     })
-    .then(res => {
+    .then((res) => {
       if (res.errcode === 0) {
         const { valid_until, count } = res.data;
         validUntil.value = formatTimestamp(valid_until);
@@ -126,7 +126,7 @@ const getScanResult = qr => {
         showToast({ type: "fail", message: res.errmsg });
       }, 1000);
     })
-    .catch(error => {
+    .catch((error) => {
       console.error(error);
     })
     .finally(() => {
