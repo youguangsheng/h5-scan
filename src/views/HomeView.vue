@@ -32,7 +32,7 @@ onMounted(() => {
   if (route.params) {
     const { qr, err } = route.params.scanRes || {};
     if (qr) {
-      showToast(qr); // 处理扫码成功结果
+      // showToast(qr); // 处理扫码成功结果
       getScanResult(qr);
     } else if (err) {
       showToast(err); // 处理失败结果
@@ -118,13 +118,23 @@ const getScanResult = (qr) => {
     .then((res) => {
       if (res.errcode === 0) {
         const { valid_until, count } = res.data;
-        validUntil.value = formatTimestamp(valid_until);
+        if( valid_until > 0 ){
+          validUntil.value = formatTimestamp(valid_until);
+        }else{
+          validUntil.value = "----";
+        }
         remaind.value = count;
-      }
 
-      setTimeout(() => {
+        setTimeout(() => {
+        showToast({ type: "success", message: res.errmsg });
+      }, 1000);
+      }else{
+        setTimeout(() => {
         showToast({ type: "fail", message: res.errmsg });
       }, 1000);
+      }
+
+      
     })
     .catch((error) => {
       console.error(error);
