@@ -10,9 +10,11 @@
 
       <div class="teach">
         <div class="teach-title">首次登陆使用请先看教程</div>
-        <button class="teach-button button" :disabled="loading">
-          使用教程
-        </button>
+        <a href="http://cloud.video.taobao.com/play/u/null/p/1/e/6/t/1/498247475921.mp4">
+          <button class="teach-button button" :disabled="loading">
+            使用教程
+          </button>
+        </a>
       </div>
     </div>
   </div>
@@ -88,7 +90,11 @@ const getOdcode = () => {
       .then((res) => {
         if (res.errcode === 0) {
           const { valid_until, count } = res.data;
-          validUntil.value = formatTimestamp(valid_until);
+          if(valid_until > 0){
+            validUntil.value = formatTimestamp(valid_until);
+          }else{
+            validUntil.value = "----";
+          }
           remaind.value = count;
         }
       })

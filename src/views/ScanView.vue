@@ -44,8 +44,8 @@ const useCamera = () => {
     .then(devices => {
       // 扫码配置
       const config = {
-        fps: 10, //  二维码扫描每秒帧数
-        qrbox: { width: 300, height: 300 }, // UI框的大小
+        fps: 30, //  二维码扫描每秒帧数
+        qrbox: { width: 210, height: 210 }, // UI框的大小
         aspectRatio: 1.777778,
         showTorchButtonIfSupported: true
       };
@@ -76,7 +76,14 @@ const useCamera = () => {
 };
 
 onMounted(() => {
-  useCamera();
+  //useCamera();
+  const isWeixinBrowser = /micromessenger/i.test(navigator.userAgent)
+  if (isWeixinBrowser) { 
+      showToast('当前浏览器是微信浏览器') 
+  }else{
+      useCamera();
+      //console.log('当前浏览器不是微信浏览器') 
+  }
   document.title = "扫码";
 });
 </script>
