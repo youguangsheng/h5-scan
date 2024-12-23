@@ -26,7 +26,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://aboutdog.cn/", // 代理目标服务器地址
+        target: "https://aboutpet.cn", // 代理目标服务器地址
         changeOrigin: true, // 是否改变源地址
         rewrite: path => path.replace(/^\/api/, "/api") // 路径重写
       }
