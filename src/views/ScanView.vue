@@ -79,7 +79,7 @@ onMounted(() => {
   //useCamera();
   const isWeixinBrowser = /micromessenger/i.test(navigator.userAgent)
   if (isWeixinBrowser) { 
-      showToast('当前浏览器是微信浏览器') 
+      showToast({ type: "fail", message: "当前浏览器是微信浏览器" });
   }else{
       useCamera();
       //console.log('当前浏览器不是微信浏览器') 
