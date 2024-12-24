@@ -11,6 +11,7 @@ import { Html5Qrcode } from "html5-qrcode";
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { onBeforeRouteLeave } from "vue-router";
+import wx from 'weixin-js-sdk';
 const router = useRouter();
 let html5QrCode = null;
 let scanRes = {}; // 存放扫码结果
@@ -74,18 +75,64 @@ const useCamera = () => {
       router.back();
     });
 };
-
 onMounted(() => {
-  //useCamera();
   const isWeixinBrowser = /micromessenger/i.test(navigator.userAgent)
   if (isWeixinBrowser) { 
-      showToast({ type: "fail", message: "当前浏览器是微信浏览器" });
+    fetch("/api/v1/wechat_jssdk_config", {
+      method: "POST", // 设置请求方法为POST
+      headers: {
+        "Content-Type": "application/json", // 设置请求头为JSON格式
+      },
+      body: JSON.stringify({}),
+    }).then((response) => {
+      return response.json(); // 将响应解析为 JSON 格式
+    }).then((res) => {
+      if (res.errcode === 0) {
+        useWeChatScanQRCode(res.data);
+      }else{
+        showToast({ type: "fail", message: res.errmsg });
+      }
+    }).catch((error) => {
+        console.error(error);
+    });
   }else{
       useCamera();
-      //console.log('当前浏览器不是微信浏览器') 
   }
   document.title = "扫码";
 });
+
+//使用微信扫码功能
+const useWeChatScanQRCode = (wechatConfig) => {
+  console.log(wechatConfig);
+  try {
+        // 初始化微信JSSDK
+        wx.config(wechatConfig);
+        // 检查JSSDK是否成功加载
+        wx.ready(() => {
+          console.log('微信JSSDK已就绪');
+          // 在这里调用微信JSSDK的API
+          wx.scanQRCode({
+            needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+            scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+            success: (res) => {
+              var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+              console.log("result:");
+              console.log(result);
+              showToast(result); // 处理失败结果
+            }
+          }, function (err) {
+            console.error(err);
+          });
+        });
+
+        // 处理错误
+        wx.error((err) => {
+          console.error('微信JSSDK加载失败', err);
+        });
+      } catch (error) {
+        console.error('获取微信JSSDK配置失败', error);
+      }
+}
 </script>
 
 <style scoped>
