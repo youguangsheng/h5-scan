@@ -116,7 +116,7 @@ const useWeChatScanQRCode = (wechatConfig) => {
             success: (res) => {
               var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
               scanRes.qr = result;
-              close();
+              router.back();
             }
           }, function (err) {
             console.error(err);

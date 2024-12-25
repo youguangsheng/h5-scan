@@ -63,6 +63,9 @@ const useLocal = (e) => {
 };
 
 const useCamera = () => {
+  if(!remaind.value){
+    return;
+  }
   router.push("/scan"); // 去扫码页面
 };
 
